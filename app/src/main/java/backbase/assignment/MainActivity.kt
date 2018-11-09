@@ -1,7 +1,7 @@
 package backbase.assignment
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import backbase.assignment.ui.citylist.CityListFragment
 
 class MainActivity : AppCompatActivity() {
