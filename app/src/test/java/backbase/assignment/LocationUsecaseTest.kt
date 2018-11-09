@@ -17,10 +17,10 @@ class LocationUsecaseTest {
   init {
     source = object : LocationDataSource {
       override val data: Collection<Location> = listOf(
-        Location("Dnipro", "", Coordinates(0.0, 0.0)),
-        Location("Kyiv", "", Coordinates(0.0, 0.0)),
-        Location("Lviv", "", Coordinates(0.0, 0.0)),
-        Location("Dniprorudne", "", Coordinates(0.0, 0.0))
+        Location(0, "Dnipro", "", Coordinates(0.0, 0.0)),
+        Location(0, "Kyiv", "", Coordinates(0.0, 0.0)),
+        Location(0, "Lviv", "", Coordinates(0.0, 0.0)),
+        Location(0, "Dniprorudne", "", Coordinates(0.0, 0.0))
       )
     }
     usecase = LocationUserCaseImpl(source)
@@ -28,22 +28,28 @@ class LocationUsecaseTest {
 
   @Test
   fun `test query with empty params returns all locations`() {
-    runBlocking { usecase.query(QueryParams(null)) }.also {
+    runBlocking {
+      usecase.query(QueryParams(null)).await()
+    }.also {
       assert(it.size == source.data.size)
     }
   }
 
   @Test
   fun `test query by city name filters locations`() {
-    runBlocking { usecase.query(QueryParams("dnipro")) }.also {
+    runBlocking {
+      usecase.query(QueryParams("dnipro")).await()
+    }.also {
       assert(it.size == 2)
-      assert(it.all { it.city == "Dnipro" || it.city == "Dniprorudne" })
+      assert(it.all { location -> location.city == "Dnipro" || location.city == "Dniprorudne" })
     }
   }
 
   @Test
   fun `test query by city name filters locations to empty if no matches`() {
-    runBlocking { usecase.query(QueryParams("xxx")) }.also {
+    runBlocking {
+      usecase.query(QueryParams("xxx")).await()
+    }.also {
       assert(it.isEmpty())
     }
   }

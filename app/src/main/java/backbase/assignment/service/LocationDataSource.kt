@@ -9,7 +9,7 @@ import com.google.gson.Gson
 interface LocationDataSource {
   val data: Collection<Location>
 
-  data class Location(val name: String, val country: String, val coord: Coordinates)
+  data class Location(val _id: Int, val name: String, val country: String, val coord: Coordinates)
   data class Coordinates(val lat: Double, val lon: Double)
 }
 
