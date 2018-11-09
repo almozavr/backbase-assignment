@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import backbase.assignment.Navigator
 import backbase.assignment.R
 
 
@@ -38,7 +39,7 @@ class CityListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     view.findViewById<RecyclerView>(R.id.citylist).apply {
-      citiesAdapter = CityListAdapter()
+      citiesAdapter = CityListAdapter { (activity as Navigator).showDetails(it) }
       layoutManager = LinearLayoutManager(view.context)
       adapter = citiesAdapter
     }
