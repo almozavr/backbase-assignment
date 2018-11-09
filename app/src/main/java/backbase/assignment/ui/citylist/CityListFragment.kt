@@ -6,25 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavHost
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import backbase.assignment.R
+import backbase.assignment.domain.LocationUseCase.Location
+import backbase.assignment.domain.LocationUserCaseImpl
+import backbase.assignment.service.LocationDataSourceImpl
+import backbase.assignment.ui.BaseFragment
 import backbase.assignment.ui.citymap.MapParams
 import backbase.assignment.ui.citymap.toBundle
+import backbase.assignment.ui.factoryViewModel
 
+class CityListFragment : BaseFragment<CityListViewModel>() {
 
-class CityListFragment : Fragment() {
-
-  private lateinit var viewModel: CityListViewModel
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel = ViewModelProviders.of(this, CityListViewModelFactory(context!!))
-      .get(CityListViewModel::class.java)
+  override val viewModel: CityListViewModel by factoryViewModel {
+    val dataSource = LocationDataSourceImpl(context!!)
+    val usecase = LocationUserCaseImpl(dataSource)
+    CityListViewModel(usecase)
   }
 
   override fun onCreateView(
@@ -43,11 +43,7 @@ class CityListFragment : Fragment() {
   private fun setupList(view: View) {
     view.findViewById<RecyclerView>(R.id.citylist).apply {
       layoutManager = LinearLayoutManager(view.context)
-      adapter = CityListAdapter {
-        (activity as NavHost).navController.navigate(
-          R.id.nav_action_city_list_to_map, MapParams(it.city, it.lat, it.lng).toBundle()
-        )
-      }
+      adapter = CityListAdapter { showMap(it) }
       //
       viewModel.cities.observe(this@CityListFragment, Observer { cities ->
         val truncatedCities = cities.take(1000)
@@ -71,6 +67,12 @@ class CityListFragment : Fragment() {
       setOnSearchClickListener { viewModel.search(query.toString()) }
       isIconified = false
     }
+  }
+
+  private fun showMap(it: Location) {
+    (activity as NavHost).navController.navigate(
+      R.id.nav_action_city_list_to_map, MapParams(it.city, it.lat, it.lng).toBundle()
+    )
   }
 
 }

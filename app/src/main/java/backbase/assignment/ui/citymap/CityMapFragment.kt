@@ -2,6 +2,7 @@ package backbase.assignment.ui.citymap
 
 import android.os.Bundle
 import android.os.Parcelable
+import backbase.assignment.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,7 +25,7 @@ class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
     arguments?.toMapParams()?.also {
       val marker = MarkerOptions()
         .position(LatLng(it.lat, it.lng))
-        .title("Marker in ${it.city}")
+        .title(getString(R.string.map_marker_title, it.city))
       googleMap.addMarker(marker)
       googleMap.moveCamera(
         CameraUpdateFactory.newLatLngZoom(LatLng(it.lat, it.lng), cityZoom)

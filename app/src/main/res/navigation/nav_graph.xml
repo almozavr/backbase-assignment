@@ -14,6 +14,8 @@
     <action
         android:id="@+id/nav_action_city_list_to_map"
         app:destination="@id/cityMapFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
         app:popUpTo="@+id/cityListFragment"/>
   </fragment>
   <fragment
@@ -21,10 +23,6 @@
       android:name="backbase.assignment.ui.citymap.CityMapFragment"
       android:label="@string/app_name"
       >
-    <argument
-        android:name="location"
-        app:argType="reference"
-        app:nullable="false"/>
   </fragment>
 
 </navigation>
