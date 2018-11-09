@@ -17,6 +17,9 @@ android {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
+    debug {
+      manifestPlaceholders += [mapsKey: System.getenv("GOOGLE_MAPS_KEY")]
+    }
   }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
