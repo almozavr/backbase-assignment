@@ -2,7 +2,6 @@ package backbase.assignment.ui.citymap
 
 import android.os.Bundle
 import android.os.Parcelable
-import backbase.assignment.domain.LocationUseCase.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -14,20 +13,6 @@ import kotlinx.android.parcel.Parcelize
 
 class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
-  companion object {
-
-    fun newInstance(location: Location): CityMapFragment {
-      val fragment = CityMapFragment()
-      fragment.arguments = Bundle().apply {
-        putParcelable(
-          ARG_KEY,
-          MapLocation(location.city, location.lat, location.lng)
-        )
-      }
-      return fragment
-    }
-  }
-
   private val cityZoom = 12f
 
   override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -36,7 +21,7 @@ class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
-    arguments?.getParcelable<MapLocation>(ARG_KEY)?.also {
+    arguments?.toMapParams()?.also {
       val marker = MarkerOptions()
         .position(LatLng(it.lat, it.lng))
         .title("Marker in ${it.city}")
@@ -49,7 +34,8 @@ class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
 }
 
-const val ARG_KEY: String = "location"
-
 @Parcelize
-data class MapLocation(val city: String, val lat: Double, val lng: Double) : Parcelable
+data class MapParams(val city: String, val lat: Double, val lng: Double) : Parcelable
+
+fun MapParams.toBundle() = Bundle().apply { putParcelable("map_params", this@toBundle) }
+private fun Bundle.toMapParams() = this.getParcelable<MapParams>("map_params")
