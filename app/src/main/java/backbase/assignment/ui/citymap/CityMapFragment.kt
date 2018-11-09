@@ -2,7 +2,7 @@ package backbase.assignment.ui.citymap
 
 import android.os.Bundle
 import android.os.Parcelable
-import backbase.assignment.R
+import backbase.assignment.R.string
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -22,13 +22,15 @@ class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
   }
 
   override fun onMapReady(googleMap: GoogleMap) {
-    arguments?.toMapParams()?.also {
-      val marker = MarkerOptions()
-        .position(LatLng(it.lat, it.lng))
-        .title(getString(R.string.map_marker_title, it.city))
-      googleMap.addMarker(marker)
-      googleMap.moveCamera(
-        CameraUpdateFactory.newLatLngZoom(LatLng(it.lat, it.lng), cityZoom)
+    val params = CityMapFragmentArgs.fromBundle(arguments).params
+    googleMap.apply {
+      addMarker(
+        MarkerOptions()
+          .position(LatLng(params.lat, params.lng))
+          .title(this@CityMapFragment.getString(string.map_marker_title, params.city))
+      )
+      moveCamera(
+        CameraUpdateFactory.newLatLngZoom(LatLng(params.lat, params.lng), cityZoom)
       )
     }
   }

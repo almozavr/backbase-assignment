@@ -16,7 +16,6 @@ import backbase.assignment.domain.LocationUserCaseImpl
 import backbase.assignment.service.LocationDataSourceImpl
 import backbase.assignment.ui.BaseFragment
 import backbase.assignment.ui.citymap.MapParams
-import backbase.assignment.ui.citymap.toBundle
 import backbase.assignment.ui.factoryViewModel
 
 class CityListFragment : BaseFragment<CityListViewModel>() {
@@ -71,7 +70,7 @@ class CityListFragment : BaseFragment<CityListViewModel>() {
 
   private fun showMap(it: Location) {
     (activity as NavHost).navController.navigate(
-      R.id.nav_action_city_list_to_map, MapParams(it.city, it.lat, it.lng).toBundle()
+      CityListFragmentDirections.showMap(MapParams(it.city, it.lat, it.lng))
     )
   }
 
