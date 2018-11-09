@@ -57,7 +57,7 @@ class CityListFragment : Fragment() {
       isIconified = false
 
     }
-    viewModel.cities.observe(this, Observer { citiesAdapter.submitList(it) })
+    viewModel.cities.observe(this, Observer { citiesAdapter.submitList(it.take(1000)) })
   }
 
 }
