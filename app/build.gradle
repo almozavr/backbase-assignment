@@ -7,7 +7,7 @@ android {
   compileSdkVersion 28
   defaultConfig {
     applicationId "backbase.assignment"
-    minSdkVersion 16
+    minSdkVersion 17
     targetSdkVersion 28
     versionCode 1
     versionName "1.0"
@@ -42,7 +42,7 @@ dependencies {
   implementation 'androidx.recyclerview:recyclerview-selection:1.0.0'
   implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
   implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
-
+  implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
   //
   implementation 'com.google.code.gson:gson:2.8.5'
   implementation 'com.google.android.gms:play-services-maps:16.0.0'

@@ -4,19 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.navigation.NavHost
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import backbase.assignment.R
 import backbase.assignment.domain.LocationUseCase.Location
 import backbase.assignment.domain.LocationUserCaseImpl
 import backbase.assignment.service.LocationDataSourceImpl
 import backbase.assignment.ui.BaseFragment
-import backbase.assignment.ui.citymap.MapParams
+import backbase.assignment.ui.citydetails.DetailsParams
 import backbase.assignment.ui.factoryViewModel
+import kotlinx.android.synthetic.main.city_list_fragment.cityfilter
+import kotlinx.android.synthetic.main.city_list_fragment.citylist
 
 class CityListFragment : BaseFragment<CityListViewModel>() {
 
@@ -40,9 +40,9 @@ class CityListFragment : BaseFragment<CityListViewModel>() {
   }
 
   private fun setupList(view: View) {
-    view.findViewById<RecyclerView>(R.id.citylist).apply {
+    citylist.apply {
       layoutManager = LinearLayoutManager(view.context)
-      adapter = CityListAdapter { showMap(it) }
+      adapter = CityListAdapter { showDetails(it) }
       //
       viewModel.cities.observe(this@CityListFragment, Observer { cities ->
         val truncatedCities = cities.take(1000)
@@ -52,7 +52,7 @@ class CityListFragment : BaseFragment<CityListViewModel>() {
   }
 
   private fun setupSearchView(view: View) {
-    view.findViewById<SearchView>(R.id.cityfilter).apply {
+    cityfilter.apply {
       setOnQueryTextListener(object : OnQueryTextListener {
         override fun onQueryTextChange(newText: String?): Boolean {
           return this.onQueryTextSubmit(newText)
@@ -68,9 +68,9 @@ class CityListFragment : BaseFragment<CityListViewModel>() {
     }
   }
 
-  private fun showMap(it: Location) {
+  private fun showDetails(it: Location) {
     (activity as NavHost).navController.navigate(
-      CityListFragmentDirections.showMap(MapParams(it.city, it.lat, it.lng))
+      CityListFragmentDirections.showDetails(DetailsParams(it.city, it.lat, it.lng))
     )
   }
 

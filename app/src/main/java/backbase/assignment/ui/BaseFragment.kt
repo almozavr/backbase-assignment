@@ -4,31 +4,28 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.Factory
 import androidx.lifecycle.ViewModelProviders
+import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class BaseFragment<V : ViewModel> : Fragment() {
+abstract class BaseFragment<out V : ViewModel> : Fragment() {
 
   protected abstract val viewModel: V
 
 }
 
 inline fun <reified V : ViewModel> BaseFragment<V>.factoryViewModel(noinline factory: ViewModelFactory<V>) =
-  ViewModelDelegate<V>(this, V::class.java, factory)
+  ViewModelDelegate(V::class.java, factory)
 
-class ViewModelDelegate<out V : ViewModel>(
-  private val fragment: Fragment,
+class ViewModelDelegate<V : ViewModel>(
   private val clazz: Class<V>,
   private val factory: ViewModelFactory<V>
-) {
-
-  operator fun getValue(thisRef: Any, prop: KProperty<*>): V =
+) : ReadOnlyProperty<BaseFragment<V>, V> {
+  override fun getValue(thisRef: BaseFragment<V>, property: KProperty<*>): V =
     ViewModelProviders.of(
-      fragment,
+      thisRef,
       object : Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-          factory.invoke() as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T = factory() as T
       }).get(clazz)
-
 }
 
 typealias ViewModelFactory<V> = () -> V

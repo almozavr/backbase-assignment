@@ -39,6 +39,3 @@ class CityMapFragment : SupportMapFragment(), OnMapReadyCallback {
 
 @Parcelize
 data class MapParams(val city: String, val lat: Double, val lng: Double) : Parcelable
-
-fun MapParams.toBundle() = Bundle().apply { putParcelable("map_params", this@toBundle) }
-private fun Bundle.toMapParams() = this.getParcelable<MapParams>("map_params")

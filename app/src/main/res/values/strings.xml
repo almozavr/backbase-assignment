@@ -1,5 +1,9 @@
 <resources>
   <string name="app_name">BackBase Assignment</string>
+  <!--List-->
+  <string name="city_filter_hint">Filter by city...</string>
+  <!--Details-->
+  <string name="show_on_map">Show on Map</string>
   <!--Map-->
   <string name="map_marker_title">Coordinates in %s</string>
 </resources>

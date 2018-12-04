@@ -13,13 +13,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:iconifiedByDefault="false"
-      app:queryHint="Filter by city..."
+      app:queryHint="@string/city_filter_hint"
       />
   <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/citylist"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_weight="1"
+      tools:listitem="@layout/recycler_view_item"
       />
 </LinearLayout>
 
